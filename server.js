@@ -1,32 +1,115 @@
 //loading misc modules
 const express = require('express');
 const fs = require('fs');
+const axios = require('axios');
+//defining variables
+let app = express();
+
+const config = JSON.parse(fs.readFileSync('config.json',
+{encoding:'utf8'}));
+
+const exampleData = JSON.parse(fs.readFileSync('TechSupport_Specs.json',
+{encoding:'utf8'}));
+
+// {
+//     url:,
+//     hw:{
+//         cpu:,
+//         gpu:,
+//         ram,
+//         mobo,
+//     },
+//     sw:{
+//         winver,
+//         uptime,
+//         uacLevel,
+
+//     }
+// }
 
 
-const exampleData = fs.readFileSync('TechSupport_Specs.json',
-{encoding:'utf8'});
+// {
+//     url,
+//     hw,
+//     sw,
+//     drives,
+//     notes
+// }
+let embed = {
+    
+    color: 2273535,
+    timestamp: new Date(),
+        fields: [
+      {
+        name: "__Hardware:__",
+        inline: true
+      },
+      {
+        name: "__Software:__",
+        inline: true
+      },
+        {
+        name: "__Drives:__",
+        inline: true
+      },
+      
+       {
+        name: "__Notes:__",
+         inline: true
+      }
+    ]
 
-const AuthorizationRouter = require('./authorization/routes.config');
-const UsersRouter = require('./users/routes.config');
+}
+//   embed: {
+//     description: "https://tech.support/selif/foo",
+//     url: "https://paste.rtech.support/selif/foobar",
+    // color: 2273535,
+//     timestamp: new Date(),
+    // fields: [
 
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-    res.header('Access-Control-Expose-Headers', 'Content-Length');
-    res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    } else {
-        return next();
+    //   {
+    //     name: "__Hardware:__",
+    //     value: "CPU: Intel Core i9 12900k (69C)\nGPU: Nvidia Geforce RTX 4020 (81C)\nRAM: 16GB DDR4 3200Mhz (XMP on)\nMobo: Asus Z690 Godlike",
+    //     inline: true
+    //   },
+    //   {
+    //     name: "__Software:__",
+    //     value: "Version: Windows 11; 21h2\nUptime: 420 Hours, 69 Min\nUAC: 0\nMcdonalds Premium Pro\nWindows Defender(Disabled)",
+    //     inline: true
+    //   },
+    //     {
+    //     name: "__Drives:__",
+    //     value: "Samsung 980 Pro (500G)\nwdx2t4313 (4000 GB)",
+    //     inline: true
+    //   },
+      
+    //    {
+    //     name: "__Notes:__",
+    //     value: "CCleaner\n312 Reallocated Sectors on wdx2t4313 (4000 GB)\nMSConfig Static Core Count",
+    //      inline: true
+    //   }
+    // ]
+//   }
+
+
+app.get('/parse', async (req, res) => {
+    console.log(req.query.url)
+    //TODO, when seals gets the jsony bit going add the get request
+    let response = exampleData;
+    let strippedData = {}
+    let formattedData = {};
+    for(let i =0; i < response.Notes.SmartIssues; i++){
+        if(response.Notes.SmartIssues[key].length > 0){
+            strippedData.smartIssues = response.Notes.SmartIssues;
+            console.log(strippedData.smartIssues)
+
+        }
+
     }
+
+
+    await res.send("{'foo':'bar'}");
 });
 
 app.use(express.json());
-AuthorizationRouter.routesConfig(app);
-UsersRouter.routesConfig(app);
-
-
-app.listen(config.port, function () {
-    console.log('app listening at port %s', config.port);
-});
+app.listen(config.port, () => console.log(`API listening on port ${config.port}`));

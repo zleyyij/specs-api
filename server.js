@@ -108,7 +108,7 @@ app.get('/parse', async (req, res) => {
             strippedData.hw.cpu = response.Hardware.find(part => part.Part == 'CPU').Product;
             strippedData.hw.gpu = response.Hardware.find(part => part.Part == 'GPU').Product;
             strippedData.hw.ramCap = response.Hardware.Ram.Total;
-            strippedData.hw.ramSpeed = response.Hardware
+            strippedData.hw.ramSpeed = response.Hardware.Ram.Sticks[0].Configuredclockspeed;
             console.log(strippedData);
 
     await res.send("{'foo':'bar'}");

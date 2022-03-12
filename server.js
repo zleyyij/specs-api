@@ -96,17 +96,20 @@ app.get('/parse', async (req, res) => {
     console.log(req.query.url)
     //TODO, when seals gets the jsony bit going add the get request
     let response = exampleData;
-    let strippedData = {}
+    let strippedData = {};
+    strippedData.hw = {};
+    strippedData.sw = {};
     let formattedData = {};
-    for(let i =0; i < response.Notes.SmartIssues; i++){
-        if(response.Notes.SmartIssues[key].length > 0){
-            strippedData.smartIssues = response.Notes.SmartIssues;
-            console.log(strippedData.smartIssues)
-
-        }
-
-    }
-
+        
+            strippedData.sw.smartIssues = response.Notes.SmartIssues;
+            strippedData.sw.staticCore = response.Notes.StaticCore;
+            strippedData.sw.Dumps  = response.Notes.Dumps;
+            strippedData.sw.winver = response.BasicInfo.Build;
+            strippedData.hw.cpu = response.Hardware.find(part => part.Part == 'CPU').Product;
+            strippedData.hw.gpu = response.Hardware.find(part => part.Part == 'GPU').Product;
+            strippedData.hw.ramCap = response.Hardware.Ram.Total;
+            strippedData.hw.ramSpeed = response.Hardware
+            console.log(strippedData);
 
     await res.send("{'foo':'bar'}");
 });
